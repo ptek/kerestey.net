@@ -6,9 +6,12 @@ packages:
   - build-base
 sources:
   - https://git.sr.ht/~ptek/kerestey.net
+secrets:
+- 413ecf62-8841-4720-ab61-bce2df38954a
 tasks:
   - deploy: |
       cd kerestey.net
+      source ~/.secrets/netlify
       make deploy
 triggers:
   - action: webhook

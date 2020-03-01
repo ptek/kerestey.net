@@ -17,7 +17,7 @@ build-engine:
 deploy:
 	rm deploy.zip; zip -r deploy _site/*
 	curl -H "Content-Type: application/zip" \
-     -H "Authorization: Bearer 2585fb207cee3c20d62c7472c76773654fb4b2942e4a5c6446945078eafa7b99" \
+     -H "Authorization: Bearer ${NETLIFY_TOKEN}" \
      --data-binary "@deploy.zip" \
      https://api.netlify.com/api/v1/sites/kerestey-net.netlify.com/deploys
 	rm deploy.zip
