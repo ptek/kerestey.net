@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/pavlo
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://kerestey.net
+  * I am pavlo (https://keybase.io/pavlo) on keybase.
+  * I have a public key ASAQ1KgPTxmSRQtNOc6mFwybdk8EKdpVXGKbwzrqxShpwgo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "012010d4a80f4f1992450b4d39cea6170c9b764f0429da555c629bc33aeac52869c20a",
+      "host": "keybase.io",
+      "kid": "012010d4a80f4f1992450b4d39cea6170c9b764f0429da555c629bc33aeac52869c20a",
+      "uid": "a5e94f923d9a26a0bca3b9888ca99519",
+      "username": "pavlo"
+    },
+    "merkle_root": {
+      "ctime": 1510780273,
+      "hash": "20d39078b1bb95ecfddcff053aa0590ca0cd983d5ae01b441c7f35c36d03923742d87d45faccce942a5755057f8db9e0754ceb6e63e5d98ddf5da84399f93dae",
+      "hash_meta": "9a0e1b1af0d5cfcde349ffece67d9c6932e8c7529534eb82355f10e8eef9dbd2",
+      "seqno": 1708832
+    },
+    "service": {
+      "hostname": "kerestey.net",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.34"
+  },
+  "ctime": 1510780297,
+  "expire_in": 504576000,
+  "prev": "9b52d6ff64a2a03b0c06c54a17a0c62884a9e01b4f8048cbf55404819816d13c",
+  "seqno": 10,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgENSoD08ZkkULTTnOphcMm3ZPBCnaVVxim8M66sUoacIKp3BheWxvYWTFA0J7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwMTBkNGE4MGY0ZjE5OTI0NTBiNGQzOWNlYTYxNzBjOWI3NjRmMDQyOWRhNTU1YzYyOWJjMzNhZWFjNTI4NjljMjBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwMTBkNGE4MGY0ZjE5OTI0NTBiNGQzOWNlYTYxNzBjOWI3NjRmMDQyOWRhNTU1YzYyOWJjMzNhZWFjNTI4NjljMjBhIiwidWlkIjoiYTVlOTRmOTIzZDlhMjZhMGJjYTNiOTg4OGNhOTk1MTkiLCJ1c2VybmFtZSI6InBhdmxvIn0sIm1lcmtsZV9yb290Ijp7ImN0aW1lIjoxNTEwNzgwMjczLCJoYXNoIjoiMjBkMzkwNzhiMWJiOTVlY2ZkZGNmZjA1M2FhMDU5MGNhMGNkOTgzZDVhZTAxYjQ0MWM3ZjM1YzM2ZDAzOTIzNzQyZDg3ZDQ1ZmFjY2NlOTQyYTU3NTUwNTdmOGRiOWUwNzU0Y2ViNmU2M2U1ZDk4ZGRmNWRhODQzOTlmOTNkYWUiLCJoYXNoX21ldGEiOiI5YTBlMWIxYWYwZDVjZmNkZTM0OWZmZWNlNjdkOWM2OTMyZThjNzUyOTUzNGViODIzNTVmMTBlOGVlZjlkYmQyIiwic2Vxbm8iOjE3MDg4MzJ9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoia2VyZXN0ZXkubmV0IiwicHJvdG9jb2wiOiJodHRwczoifSwidHlwZSI6IndlYl9zZXJ2aWNlX2JpbmRpbmciLCJ2ZXJzaW9uIjoxfSwiY2xpZW50Ijp7Im5hbWUiOiJrZXliYXNlLmlvIGdvIGNsaWVudCIsInZlcnNpb24iOiIxLjAuMzQifSwiY3RpbWUiOjE1MTA3ODAyOTcsImV4cGlyZV9pbiI6NTA0NTc2MDAwLCJwcmV2IjoiOWI1MmQ2ZmY2NGEyYTAzYjBjMDZjNTRhMTdhMGM2Mjg4NGE5ZTAxYjRmODA0OGNiZjU1NDA0ODE5ODE2ZDEzYyIsInNlcW5vIjoxMCwidGFnIjoic2lnbmF0dXJlIn2jc2lnxED5PeB5d2sDybrW+FFc7h8PZoEySmhjq2b6VDQs/iq/QxFK6T7F7T8A6UDRwH84WPgSKCBBaPbNSnqEjMsdPvIDqHNpZ190eXBlIKRoYXNogqR0eXBlCKV2YWx1ZcQg2xRG9vaPDSJ2kDQTxVxewksrznbevivrwYnNbRWNcXejdGFnzQICp3ZlcnNpb24B
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/pavlo
+
+==================================================================

@@ -1,0 +1,88 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/writing.css" />
+    <link rel="icon" type="image/png" href="../favicon.png" />
+    <title>Post multipart/form-data with khttp . Pavlo Kerestey</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <article>
+  <header>
+    <h1 class="centered">Post multipart/form-data with khttp</h1>
+  </header>
+  <main>
+    <date class="centered">
+      <span><small>Pavlo Kerestey - October 26, 2019</small></span>
+    </date>
+    <article>
+      <p>A challenge that I had recently was sending some data as <code>json</code> to an endpoint as <code>multipart/form-data</code>, providing the right encoding, in a Kotlin codebase.</p>
+<p>It turns out, that it is not as straight-forward to do with the current version of <a href="https://khttp.readthedocs.io/en/latest/">khttp</a> as I thought it would be. The only way I have found out, is to implement the <a href="https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html">multipart rfc</a> separately. For this I have used a workaround, that currently, if data is supplied to khttp request as <code>ByteArrayInputStream</code>, khttp will pass it on unchanged. So here is what I came up with:</p>
+<pre><code>import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.Writer
+
+fun Writer.writeAndFlush(string: String) {
+    this.write(string)
+    this.flush()
+}
+
+data class FormPart(val content: String, val type: String)
+
+data class MultipartForm(
+    val headers: Map&lt;String,String&gt;,
+    val data: ByteArrayInputStream
+) {
+  companion object {
+    fun create(data: Map&lt;String,FormPart&gt;): MultipartForm {
+      val boundary = “BoundaryAsSpecifiedByRFC”
+      val headers = mapOf(
+        &quot;Content-Type&quot; to &quot;multipart/form-data; boundary=${boundary}&quot;
+        )
+      val requestBodyBytes = ByteArrayOutputStream()
+      val writer = requestBodyBytes.writer()
+      for ((key, payload) in data) {
+        writer.writeAndFlush(&quot;--${boundary}\r\n&quot;)
+        writer.writeAndFlush(
+            &quot;Content-Disposition: form-data; name=\&quot;${key}\&quot;
+            )
+        writer.writeAndFlush(&quot;\r\n&quot;)
+        writer.writeAndFlush(&quot;Content-Type: ${payload.type}&quot;)
+        writer.writeAndFlush(&quot;\r\n\r\n&quot;)
+        writer.writeAndFlush(payload.content)
+        writer.writeAndFlush(&quot;\r\n&quot;)
+        writer.writeAndFlush(&quot;--${boundary}--\r\n&quot;)
+      }
+      writer.close()
+      return MultipartForm(
+        headers,
+        ByteArrayInputStream(requestBodyBytes.toByteArray())
+        )
+    }
+  }
+}</code></pre>
+<p>To use this, one would first serialise the object into json, construct the multipart using MultipartForm and use the resulting data to send the request:</p>
+<pre><code>val payload = FormPart(data, &quot;application/json&quot;)
+val form = MultipartForm.create(
+  mapOf(&quot;payload&quot; to payload)
+)
+
+post(url, headers=form.headers, data=form.data)</code></pre>
+<p>I have borrowed some ideas about how to deal with the Byte Arrays from khttp directly. It also turns out, that the python requests library does not provide such functionality either out of the box. The only way, apparently, to do it is to use the <a href="https://pypi.org/project/requests-toolbelt/">requests-toolbelt</a> with MultipartEncoder</p>
+    </article>
+    <hr />
+  </main>
+</article>
+    <footer class="centered">
+        <small>
+            <a href="../">home</a>
+            |
+            <a href="../writing.html">writing</a>
+            |
+            <span><p>
+site created with <a href="https://jaspervdj.be/hakyll/">hakyll</a> and hosted <a href="https://netlify.com"><span class="citation" data-cites="netlify">@netlify</span></a>
+</p></span>
+        </small>
+    </footer>
+</body>
+</html>

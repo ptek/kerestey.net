@@ -1,0 +1,79 @@
+html {
+    font-family: Helvetica, Arial, sans-serif;
+}
+body {
+    margin: 0 auto;
+    max-width:690px;
+    padding: 1rem;
+    line-height:1.6;
+    font-size:18px;
+    color:#444;
+    background-color:white;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+h1,h2,h3 {
+    line-height:1.2
+}
+pre {
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+pre code {
+    font-size: 0.8em;
+    display: block;
+    font-family: "Lucida Console", Monaco, Consolas, "Ubuntu Mono", monospace;
+    border-radius: 5px;
+    background-color:#e0dee7;
+    color: #333;
+    padding: 10px;
+    overflow-x: wrap;
+}
+code {
+    display: inline;
+    color: #777;
+    font-size:0.9em;
+}
+.posts-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+small {
+    font-size:0.9rem;
+}
+.centered {
+    text-align: center;
+}
+h3 a {
+    text-decoration: none;
+    color: inherit;
+}
+header {
+    margin: 20px auto;
+}
+main {
+    flex: 1;
+}
+footer {
+    margin: 20px auto;
+}
+footer span p {
+    display: inline-block;
+}
+date {
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid #aaa;
+    line-height: 0;
+    margin: 2.0rem 0 2.0rem;
+}
+date span {
+    background-color:white;
+    color: #757575;
+    padding: 0 1rem;
+}
