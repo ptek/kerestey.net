@@ -11,7 +11,9 @@ secrets:
 tasks:
   - deploy: |
       cd kerestey.net
+      set +xv
       source ~/.secrets/netlify
+      set -x
       make deploy
 triggers:
   - action: webhook
