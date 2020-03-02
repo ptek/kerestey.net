@@ -8,7 +8,7 @@ packages:
 sources:
   - https://git.sr.ht/~ptek/kerestey.net
 secrets:
-- 413ecf62-8841-4720-ab61-bce2df38954a
+- 1c3b4a72-1669-4a9f-8aa7-d63fd004ee26
 tasks:
   - deploy: |
       cd kerestey.net
