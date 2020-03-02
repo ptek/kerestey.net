@@ -4,6 +4,7 @@ packages:
   - curl
   - zip
   - build-base
+  - jq
 sources:
   - https://git.sr.ht/~ptek/kerestey.net
 secrets:
