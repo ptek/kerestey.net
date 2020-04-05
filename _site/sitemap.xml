@@ -21,6 +21,13 @@
     </url>
     
     <url>
+        <loc>https://kerestey.net/writing/2020-04-05-announcing-unverified-dot-email.html</loc>
+        <lastmod>2020-04-05</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
         <loc>https://kerestey.net/writing/2019-10-26-post-multipart-form-data-using-khttp.html</loc>
         <lastmod>2019-10-26</lastmod>
         <changefreq>weekly</changefreq>
