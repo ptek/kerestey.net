@@ -62,11 +62,6 @@ main = hakyllWith hakyllConf $ do
     -- Read templates
     match "templates/*" $ compile templateCompiler
 
-    -- Render home
-    match "index.html" $ do
-        route idRoute
-        compile $ textInsertionCompiler >>= relativizeUrls
-
     -- Render pages
     match "pages/**" $ do
         route $ gsubRoute "pages/" (const "") `composeRoutes` createSubpageDir
@@ -80,6 +75,16 @@ main = hakyllWith hakyllConf $ do
             pandocCompilerWithAsciidoctor
                 >>= loadAndApplyTemplate "templates/writing.html" ctx
                 >>= loadAndApplyTemplate "templates/default.html" ctx
+                >>= relativizeUrls
+
+    -- Render home
+    create ["index.html"] $ do
+        route idRoute
+        compile $ do
+            ctx <- loadContext defaultCtx
+            makeItem ("" :: String)
+                >>= loadAndApplyTemplate "templates/index.html" ctx
+                >>= insertTexts
                 >>= relativizeUrls
 
     create ["writing.html"] $ do
