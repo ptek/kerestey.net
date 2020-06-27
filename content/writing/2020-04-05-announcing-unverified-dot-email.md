@@ -3,6 +3,24 @@ title: Announcing unverified.email
 author: Pavlo Kerestey
 ---
 
+# Important Update.
+
+June 27, 2020
+
+The service over at api.unverified.email has been keeping up since the announcement.
+I could not been happier with it. To support it better, though, I would need to 
+spend more time on it, which I currently do not have.
+
+Therefore I have decided to switch 
+[https://api.unverified.email](https://api.unverified.email) off at the end of 
+August 2020. If you want to keep using unverified.email for your project, you can
+do so by running the service yourself on your infrastructure using the 
+[code available at github](https://github.com/honest-technology/api.unverified.email).
+
+----
+
+Original article on April 5, 2020
+
 I want to announce unverified.email - a hosted service to test emails. I have
 been running it for several weeks now, and I am quite happy with the result so
 far. With the service, one can use automated testing to verify that the email
@@ -131,7 +149,7 @@ The `/receive/<mailbox_id>` endpoint is waiting for emails to show up on the
 server for around 15 seconds, so you do not need to refresh the url repeatedly.
 
 The code is available at
-[https://github.com/ptek/api.unverified.email](https://github.com/ptek/api.unverified.email)
+[https://github.com/honest-technology/api.unverified.email](https://github.com/honest-technology/api.unverified.email)
 where you can also open issues if something needs attention. You can also run
 the service on your infrastructure if needed. Drop me a note if you do -
 I would be very interested to know if it is useful to anyone.

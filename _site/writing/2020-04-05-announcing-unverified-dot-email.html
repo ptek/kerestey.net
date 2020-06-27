@@ -16,7 +16,13 @@
       <span><small>Pavlo Kerestey - April  5, 2020</small></span>
     </date>
     <article>
-      <p>I want to announce unverified.email - a hosted service to test emails. I have been running it for several weeks now, and I am quite happy with the result so far. With the service, one can use automated testing to verify that the email logic in your application is correct.</p>
+      <h1 id="important-update.">Important Update.</h1>
+<p>June 27, 2020</p>
+<p>The service over at api.unverified.email has been keeping up since the announcement. I could not been happier with it. To support it better, though, I would need to spend more time on it, which I currently do not have.</p>
+<p>Therefore I have decided to switch <a href="https://api.unverified.email">https://api.unverified.email</a> off at the end of August 2020. If you want to keep using unverified.email for your project, you can do so by running the service yourself on your infrastructure using the <a href="https://github.com/honest-technology/api.unverified.email">code available at github</a>.</p>
+<hr />
+<p>Original article on April 5, 2020</p>
+<p>I want to announce unverified.email - a hosted service to test emails. I have been running it for several weeks now, and I am quite happy with the result so far. With the service, one can use automated testing to verify that the email logic in your application is correct.</p>
 <p>unverified.email is a catch-all SMTP server. You can use it programmatically via its API at <a href="https://api.unverified.email">https://api.unverified.email</a>, and the article shows an example of its usage. To follow, you would need <code>curl</code> [<a href="https://curl.haxx.se/download.html">1</a>] and <code>jq</code> [<a href="https://stedolan.github.io/jq/download/">2</a>] installed (on Linux, use the package manager, and macOS supplies it via homebrew).</p>
 <h2 id="setup-of-the-test">Setup of the test</h2>
 <p>First, in our automated test code, we should prepare the environment to point at the test SMTP server: smtp.unverified.email on port 25. That way, the test automation is ready to send emails to be captured and verified when ready.</p>
@@ -77,7 +83,7 @@ X-Unverified-Mailbox: 7bb1d8d0-7b00-4375-a3fd-d119b56042f2
 A test email message created by the application</code></pre>
 <p>You can create as many mailboxes as you want, and they are deleted 5 minutes after creation.</p>
 <p>The <code>/receive/&lt;mailbox_id&gt;</code> endpoint is waiting for emails to show up on the server for around 15 seconds, so you do not need to refresh the url repeatedly.</p>
-<p>The code is available at <a href="https://github.com/ptek/api.unverified.email">https://github.com/ptek/api.unverified.email</a> where you can also open issues if something needs attention. You can also run the service on your infrastructure if needed. Drop me a note if you do - I would be very interested to know if it is useful to anyone.</p>
+<p>The code is available at <a href="https://github.com/honest-technology/api.unverified.email">https://github.com/honest-technology/api.unverified.email</a> where you can also open issues if something needs attention. You can also run the service on your infrastructure if needed. Drop me a note if you do - I would be very interested to know if it is useful to anyone.</p>
 <h4 id="some-alternatives">Some alternatives:</h4>
 <ul>
 <li><a href="https://rubygems.org/gems/mailtrap"><strong>mailtrap</strong></a>, a ruby library</li>
