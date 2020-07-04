@@ -65,7 +65,13 @@ main = hakyllWith hakyllConf $ do
     -- Render pages
     match "pages/**" $ do
         route $ gsubRoute "pages/" (const "") `composeRoutes` createSubpageDir
-        compile $ textInsertionCompiler >>= relativizeUrls
+        compile $ do
+            ctx <- loadContext defaultCtx
+            pandocCompilerWithAsciidoctor
+                >>= loadAndApplyTemplate "templates/page.html" ctx
+                >>= loadAndApplyTemplate "templates/default.html" ctx
+                >>= insertTexts
+                >>= relativizeUrls
 
     -- Render posts
     match "writing/**" $ do
@@ -117,9 +123,6 @@ insertTexts :: Item String -> Compiler (Item String)
 insertTexts resourceBody = do
     textContext <- loadContext defaultCtx
     applyAsTemplate textContext resourceBody
-
-textInsertionCompiler :: Compiler (Item String)
-textInsertionCompiler = getResourceBody >>= insertTexts
 
 loadTexts :: Compiler (Context a)
 loadTexts =
