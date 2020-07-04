@@ -7,16 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <article>
-  <header>
-    <h1 class="centered">Serializing kotlin sealed classes (algebraic datatypes) to JSON</h1>
-  </header>
-  <main>
-    <date class="centered">
-      <span><small>Pavlo Kerestey - October 10, 2019</small></span>
-    </date>
-    <article>
-      <p>At my current project, I am trying to discover how to represent <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">algebraic datatypes</a> in Kotlin. The reason I’d like to use them is the ability to exhaustively specify all the cases of a thing that I care about.</p>
+    <header>
+  <h1 class="centered">Serializing kotlin sealed classes (algebraic datatypes) to JSON</h1>
+</header>
+<main>
+  <date class="centered">
+    <span><small>Pavlo Kerestey - October 10, 2019</small></span>
+  </date>
+  <article>
+    <p>At my current project, I am trying to discover how to represent <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">algebraic datatypes</a> in Kotlin. The reason I’d like to use them is the ability to exhaustively specify all the cases of a thing that I care about.</p>
 <p>So, across the internet, people suggest using <a href="http://engineering.pivotal.io/post/algebraic-data-types-in-kotlin/">sealed classes for this purpose</a>. This structure allows the typechecker to tell me if I have forgotten to handle some case deep down in the code.</p>
 <p>Eventually, I need to communicate with the outside world using JSON and it took some time to understand how to serialise a sealed class with objects in it. The problem is, that the inner objects represent both a type, and a constructor of that type, but they are not values that can be written in JSON.</p>
 <p>Using ideas from a <a href="https://stackoverflow.com/a/54423515">StackOverflow answer</a>, I have come up with this trick to help Jackson do the right thing:</p>
@@ -33,10 +32,9 @@ sealed class Fruit {
 <p>If we now want to serialise an <code>Orange</code> into JSON, <code>jsonMapper.writeValueAsString(Fruit.Orange)</code> will produce something like this:</p>
 <pre><code>{ “Fruit”: “Orange” }</code></pre>
 <p>The reason it works in my understanding, is that every object in <code>Fruit</code> inherits the <code>serialize()</code> function and the <code>@JsonGetter</code> too. So <code>Fruit.Orange.serialize()</code> will be <code>"Orange"</code></p>
-    </article>
-    <hr />
-  </main>
-</article>
+  </article>
+  <hr />
+</main>
     <footer class="centered">
         <small>
             <a href="../">home</a>
