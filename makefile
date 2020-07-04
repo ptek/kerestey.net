@@ -1,11 +1,13 @@
+engine=$(shell find .stack-work/dist/x86_64-osx -type f -name 'engine' | sort | head -1)
+
 build:
-	stack exec engine -- build
+	$(engine) build
 
 watch:
-	stack exec engine -- watch
+	$(engine) watch
 
 check:
-	stack exec engine -- check
+	$(engine) check
 
 rebuild:
 	rm -rf _site _cache
