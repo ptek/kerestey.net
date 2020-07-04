@@ -1,1 +1,1 @@
-### code powering https://kerestey.net
+### https://kerestey.net
