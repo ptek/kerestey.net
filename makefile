@@ -1,4 +1,4 @@
-engine=$(shell find .stack-work/dist/x86_64-osx -type f -name 'engine' | sort | head -1)
+engine=$(shell find dist-newstyle/build/x86_64-osx -type f -name 'engine' | sort | head -1)
 
 build:
 	$(engine) build
@@ -14,7 +14,7 @@ rebuild:
 	make build
 
 build-engine:
-	stack build
+	cabal new-build
 
 deploy:
 	rm -f deploy.zip; zip -r deploy _site/*

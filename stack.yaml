@@ -1,9 +1,0 @@
-# Fixed to 11.9 because pandoc fails to compile with newer lts versions
-# Will have to test if this will happen with newer lts versions
-resolver: lts-14.17
-packages:
-- '.'
-extra-deps:
-- hakyll-4.13.0.1
-flags: {}
-extra-package-dbs: []
