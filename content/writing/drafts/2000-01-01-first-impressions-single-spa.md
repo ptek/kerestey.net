@@ -45,7 +45,7 @@ their presence. It leads to breakage much later in the lifecycle, where
 single-spa discovers that it can’t do what the developer asks it to do because
 some error happened before.
 
-### Impression
+### Conclusion
 
 The framework solves an interoperability problem between micro-frontends being
 written with multiple frameworks quite well. Doing that, it also, unfortunately,
@@ -59,4 +59,5 @@ automated tests before my code reaches production. Some things, though, are
 quite difficult to test automatically in single-spa, so I am not very happy yet.
 
 I will work with the framework further and hope to get a much more complete
-overview of its merits. But for now, this is it.
+overview of its merits. But for now, I am not sure if I would choose it again
+for a new project.

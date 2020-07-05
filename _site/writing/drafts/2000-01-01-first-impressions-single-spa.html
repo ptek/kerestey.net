@@ -24,10 +24,10 @@
 <p>On the code side, I am not quite sure how I feel about it. I have no other micro-frontend frameworks to compare it to, but I often struggle with the way single-spa integration works.</p>
 <p>For example - the framework allows us to handle errors when calling its functions but throws those errors asynchronously anyway without any entry point to catch them. This has led us on a week-long journey to make it work and create workarounds like global state variables indicating if everything is still ok with the lifecycle of children elements, and a lot of if-then-else to control the display of those elements on these toggles.</p>
 <p>In another instance, it requires particular arguments to be passed to its lifecycle functions (bootstrap, mount, unmount), but never actually checks for their presence. It leads to breakage much later in the lifecycle, where single-spa discovers that it can’t do what the developer asks it to do because some error happened before.</p>
-<h3 id="impression">Impression</h3>
+<h3 id="conclusion">Conclusion</h3>
 <p>The framework solves an interoperability problem between micro-frontends being written with multiple frameworks quite well. Doing that, it also, unfortunately, hides a lot of issues that those micro-fronteds sometimes produce under the carpet when I inevitably am making a mistake.</p>
 <p>I prefer that errors appear as close to where they appear as possible, so I don’t need to trace the root cause of my mistakes through the whole codebase. And If I make a mistake, I’d like to be told about that in the application or my automated tests before my code reaches production. Some things, though, are quite difficult to test automatically in single-spa, so I am not very happy yet.</p>
-<p>I will work with the framework further and hope to get a much more complete overview of its merits. But for now, this is it.</p>
+<p>I will work with the framework further and hope to get a much more complete overview of its merits. But for now, I am not sure if I would choose it again for a new project.</p>
   </article>
   <hr />
 </main>
