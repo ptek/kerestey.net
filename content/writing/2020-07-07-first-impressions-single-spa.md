@@ -3,9 +3,9 @@ title: First impressions with Single-SPA
 author: Pavlo Kerestey
 ---
 
-Recently I have been using the [single-spa
-framework](https://single-spa.js.org/) to create a dashboard where developers
-can publish small bits of data visualization on a page.
+On my current project I use [single-spa framework](https://single-spa.js.org/)
+to create a dashboard where developers can publish small bits of data
+visualization.
 
 The decision for using micro-frontends in general, and single-spa in
 particular, has happened long before I have joined the team, and we have more
@@ -62,7 +62,7 @@ prop](https://single-spa.js.org/docs/building-applications/#lifecyle-props).
 But single-spa does not check for the presence of it when the function is
 called. 
 
-When we create an entrypoint to an application with
+When we created an entrypoint to an application with
 
 ```typescript
 function mount(): {

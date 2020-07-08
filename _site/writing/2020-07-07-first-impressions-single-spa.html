@@ -15,7 +15,7 @@
     <span><small>Pavlo Kerestey - July  7, 2020</small></span>
   </date>
   <article>
-    <p>Recently I have been using the <a href="https://single-spa.js.org/">single-spa framework</a> to create a dashboard where developers can publish small bits of data visualization on a page.</p>
+    <p>On my current project I use <a href="https://single-spa.js.org/">single-spa framework</a> to create a dashboard where developers can publish small bits of data visualization.</p>
 <p>The decision for using micro-frontends in general, and single-spa in particular, has happened long before I have joined the team, and we have more than five other teams integrating with it - so the adoption has been broad.</p>
 <p>Single-spa is good at solving the complex problem of interoperability with different javascript frameworks as micro-frontends. It also has some architectural choices forcing us to write code that is hard to reason about.</p>
 <p>In short, I am not quite sure how I feel about it. I have no other micro-frontend framework to compare it to, but I often struggle with the way the integration works.</p>
@@ -34,7 +34,7 @@
 <p>The whole journey reminded me of the article by Raymond Chen from 2005: <a href="https://devblogs.microsoft.com/oldnewthing/20050114-00/?p=36693">“Cleaner, more elegant, and harder to recognize.”</a></p>
 <h5 id="unchecked-required-props">Unchecked required props</h5>
 <p>In another instance, each of the lifecycle functions (bootstrap, mount, and unmount) <a href="https://single-spa.js.org/docs/building-applications/#lifecyle-props">requires a <code>name</code> prop</a>. But single-spa does not check for the presence of it when the function is called.</p>
-<p>When we create an entrypoint to an application with</p>
+<p>When we created an entrypoint to an application with</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">function</span> <span class="fu">mount</span>()<span class="op">:</span> {</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  return singleSpa<span class="op">.</span><span class="fu">mount</span>(props)<span class="op">;</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>}</span></code></pre></div>
