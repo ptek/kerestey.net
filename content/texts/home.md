@@ -7,9 +7,9 @@ pavlo kerestey
 
 software development
 
-[code](https://github.com/ptek)
-
 [writing](/writing.html)
+
+[projects](https://github.com/ptek)
 
 [keybase](https://keybase.io/pavlo)
 
