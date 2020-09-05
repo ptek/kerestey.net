@@ -1,6 +1,5 @@
 html {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 16px;
     font-weight: 300;
     padding: 0;
     margin: 0;
@@ -17,7 +16,8 @@ body {
     flex-direction: column;
 }
 h1,h2,h3 {
-    line-height:1.2
+    line-height:1.2;
+    font-weight: 200;
 }
 pre {
     white-space: pre-wrap;       /* css-3 */
@@ -46,37 +46,50 @@ code {
     padding: 0;
     margin: 0;
 }
-small {
-    font-size:0.9rem;
-}
 .centered {
     text-align: center;
 }
 h3 a {
     text-decoration: none;
     color: inherit;
+    font-weight: 200;
 }
 header {
-    margin: 20px auto;
+    margin: 1em auto;
 }
 main {
     flex: 1;
 }
 footer {
-    margin: 20px auto;
+    margin: 2em auto;
 }
 footer span p {
     display: inline-block;
+}
+small {
+    font-size: 0.8em;
 }
 date {
     display: block;
     width: 100%;
     border-bottom: 1px solid #aaa;
     line-height: 0;
-    margin: 2.0rem 0 2.0rem;
+    margin: 1.0rem 0 2.0rem;
 }
 date span {
     background-color:white;
     color: #757575;
     padding: 0 1rem;
+}
+
+@media (min-width: 1025px) {
+    html {
+        font-size: 1rem;
+    }    
+}
+
+@media (max-width: 1024px) {
+    html {
+        font-size: 1.2rem;
+    }
 }
