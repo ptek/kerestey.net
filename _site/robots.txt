@@ -2,9 +2,7 @@ Sitemap: http://kerestey.net/sitemap.xml
 
 User-agent: *
 Disallow: /js
-Disallow: /css
 Disallow: /images
-Disallow: /fonts
 Disallow: /unpublished
 Disallow: /writing/drafts/
 Allow: /
