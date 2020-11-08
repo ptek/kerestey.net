@@ -35,7 +35,7 @@ The company decides that the changes will be done sequentially:
 	```typescript
 	interface Parameters { 
 		dark: boolean;
-		size: { width: int };
+		size: { width: number };
 	}
 	```
 
@@ -49,7 +49,7 @@ As a picture:
 --------|-------------------------|--------------------|------------------|-> time
         v                         v                    v                  v
 in the container add   implement resizing      implement resizing  publish the resizing
-size: { width: int }   in the microfrontends   in the container    functionality
+size: {width: number}  in the microfrontends   in the container    functionality
 that doesn't change                                                to production
 ```
 
@@ -66,7 +66,7 @@ _Cons:_
 
 The company figures out that they want to deploy faster and ask the developers of microfrontends to work on the new feature right away, while the container developers already start working on resizing the application in parallel.
 
-The only decision the has been made: the type of the size property will be: `size: { width: int }`
+The only decision the has been made: the type of the size property will be: `size: { width: number }`
 
 
 ```text
@@ -84,7 +84,7 @@ Here, the microfrontends can not rely on the fact that the value of size is avai
 ```typescript
 interface Parameters { 
 	dark: boolean;
-	size: { width: int? }?;
+	size: { width: number? }?;
 }
 ```
 
@@ -116,7 +116,7 @@ We would therefore have the types as follows:
 ```typescript
 interface Parameters { 
 	dark: boolean;
-	size: { width: int };
+	size: { width: number };
 }
 
 type RawParameters = Partial<Parameters>;

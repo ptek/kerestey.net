@@ -31,7 +31,7 @@
 <li><p>first, a new field is going to be added to the passed on properties in the container. The new parameters are, therefore:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>interface Parameters { </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> int }<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> <span class="dt">number</span> }<span class="op">;</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>}</span></code></pre></div></li>
 <li><p>the container team needs to publish the new version of the application before the microfrontend teams can start adding the value to their dependencies and make their content adjustable</p></li>
 <li><p>now, the microfrontends can add the property to their dependent parameters, and use it to adjust the styles according to it</p></li>
@@ -41,7 +41,7 @@
 <pre class="text"><code>--------|-------------------------|--------------------|------------------|-&gt; time
         v                         v                    v                  v
 in the container add   implement resizing      implement resizing  publish the resizing
-size: { width: int }   in the microfrontends   in the container    functionality
+size: {width: number}  in the microfrontends   in the container    functionality
 that doesn't change                                                to production</code></pre>
 <p><em>Pros:</em></p>
 <ul>
@@ -54,7 +54,7 @@ that doesn't change                                                to production
 </ul>
 <h2 id="the-parallel-coordination">The parallel coordination</h2>
 <p>The company figures out that they want to deploy faster and ask the developers of microfrontends to work on the new feature right away, while the container developers already start working on resizing the application in parallel.</p>
-<p>The only decision the has been made: the type of the size property will be: <code>size: { width: int }</code></p>
+<p>The only decision the has been made: the type of the size property will be: <code>size: { width: number }</code></p>
 <pre class="text"><code>                   --------|-------------------------|-&gt; time
                            v                         v   
                     implement resizing      publish the resizing
@@ -65,7 +65,7 @@ that doesn't change                                                to production
 <p>Here, the microfrontends can not rely on the fact that the value of size is available to them right away. The type they have to add to the properties will probably first look something like this:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>interface Parameters { </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> int<span class="op">?</span> }<span class="op">?;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> <span class="dt">number</span><span class="op">?</span> }<span class="op">?;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Until the container implements and publishes the resizing, the microfrontends will have to check if the size is already available before adapting the content.</p>
 <p><em>Pros:</em></p>
@@ -89,7 +89,7 @@ that doesn't change                                                to production
 <p>We would therefore have the types as follows:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>interface Parameters { </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> int }<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> <span class="dt">number</span> }<span class="op">;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">type</span> RawParameters <span class="op">=</span> <span class="bu">Partial</span><span class="op">&lt;</span>Parameters<span class="op">&gt;;</span></span></code></pre></div>
