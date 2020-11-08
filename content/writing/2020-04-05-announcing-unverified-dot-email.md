@@ -12,7 +12,7 @@ I could not been happier with it. To support it better, though, I would need to
 spend more time on it, which I currently do not have.
 
 Therefore I have decided to switch 
-[https://api.unverified.email](https://api.unverified.email) off at the end of 
+https://api.unverified.email off at the end of 
 August 2020. If you want to keep using unverified.email for your project, you can
 do so by running the service yourself on your infrastructure using the 
 [code available at github](https://github.com/honest-technology/api.unverified.email).
@@ -27,7 +27,7 @@ far. With the service, one can use automated testing to verify that the email
 logic in your application is correct.
 
 unverified.email is a catch-all SMTP server. You can use it programmatically via
-its API at [https://api.unverified.email](https://api.unverified.email), and
+its API at https://api.unverified.email, and
 the article shows an example of its usage. To follow, you would need `curl` [[1]]
 and `jq` [[2]] installed (on Linux, use the package manager, and macOS supplies
 it via homebrew).
@@ -39,7 +39,7 @@ the test SMTP server: smtp.unverified.email on port 25. That way, the test
 automation is ready to send emails to be captured and verified when ready.
 
 Next, we can create a mailbox via `HTTP GET` request to
-[https://api.unverified.email/create](https://api.unverified.email/create) and
+https://api.unverified.email/create and
 remember the `mailbox_id`. The mailbox exists for 5 minutes and is deleted
 after, purging all the emails within:
 
