@@ -1,5 +1,5 @@
 ---
-title: On types in evolving cross micro frontends communication
+title: On types in evolving microfrontend communication
 author: Pavlo Kerestey
 ---
 
