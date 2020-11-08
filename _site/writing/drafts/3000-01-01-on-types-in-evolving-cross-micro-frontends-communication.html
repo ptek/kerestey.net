@@ -1,0 +1,124 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="../../css/writing.css" />
+        <link rel="icon" type="image/png" href="../../favicon.png" />
+        <title>On types in evolving cross micro frontends communication . Pavlo Kerestey</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <header>
+  <h1 class="centered">On types in evolving cross micro frontends communication</h1>
+</header>
+<main>
+  <date class="centered">
+    <span><small>Pavlo Kerestey - January  1, 3000</small></span>
+  </date>
+  <article>
+    <p><a href="https://dev.to/luistak/cross-micro-frontends-communication-30m3">A very insightful article on dev.to</a> discusses multiple ways for cross microfrontends communication. One interesting aspect that I’d like to add is the type safety of values passed between microfrontends as the application is being developed.</p>
+<h2 id="the-planning">The planning</h2>
+<p>When developing an application consisting of several microfrontends, the motivation is to give autonomy to the teams responsible for the different parts of the application. Dependencies between the microfrontends evolve, and the development usually has to be a coordinated undertaking. The way a company chooses to coordinate the development affects the implementation, and I have found several scenarios and how they possibly affect code.</p>
+<h2 id="the-setup">The setup</h2>
+<p>For example, I describe an application similar to the article about cross microfrontend communication: <strong>a container</strong> responsible for loading and laying out all the microfrontends, and the <strong>two microfrontends</strong> that show actual content.</p>
+<p>For the sake of the example, at the beginning of the development lifecycle, the container passes a switch to the microfrontends indicating that the user is using a dark mode in their OS. This way, the microfrontends can adapt their styling accordingly. Future features are still being analyzed as the business figures out the right set of functionality. Until then, the application goes live with minimum content so that users get to know about it.</p>
+<p>Usually, in the microfrontends, I would type the properties exactly as they are receiving it from the container, i.e.:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>{ dark<span class="op">:</span> <span class="dt">boolean</span> }</span></code></pre></div>
+<p>The mechanism of receiving the value does not matter in this case.</p>
+<p>After some time, the company figured out that users care very much about the responsiveness of their view. So they want to add size in pixels of the microfrontend for it to adapt.</p>
+<h2 id="the-sequential-coordination">The sequential coordination</h2>
+<p>The company decides that the changes will be done sequentially:</p>
+<ul>
+<li><p>first, a new field is going to be added to the passed on properties in the container. The new parameters are, therefore:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>interface Parameters { </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> int }<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>}</span></code></pre></div></li>
+<li><p>the container team needs to publish the new version of the application before the microfrontend teams can start adding the value to their dependencies and make their content adjustable</p></li>
+<li><p>now, the microfrontends can add the property to their dependent parameters, and use it to adjust the styles according to it</p></li>
+<li><p>only when every microfrontend has deployed their adaptiveness can the container also add resizing functionality to the website so that the application does not show different microfrontends in a broken way</p></li>
+</ul>
+<p>As a picture:</p>
+<pre class="text"><code>--------|-------------------------|--------------------|------------------|-&gt; time
+        v                         v                    v                  v
+in the container add   implement resizing      implement resizing  publish the resizing
+size: { width: int }   in the microfrontends   in the container    functionality
+that doesn't change                                                to production</code></pre>
+<p><em>Pros:</em></p>
+<ul>
+<li>the microfrontends can use the <code>size</code> value and not worry if it is passed or not</li>
+<li>the microfrontends can add the right type as actually seen in the passed parameters</li>
+</ul>
+<p><em>Cons:</em></p>
+<ul>
+<li>the process takes a long time, and there is potential for improvement</li>
+</ul>
+<h2 id="the-parallel-coordination">The parallel coordination</h2>
+<p>The company figures out that they want to deploy faster and ask the developers of microfrontends to work on the new feature right away, while the container developers already start working on resizing the application in parallel.</p>
+<p>The only decision the has been made: the type of the size property will be: <code>size: { width: int }</code></p>
+<pre class="text"><code>                   --------|-------------------------|-&gt; time
+                           v                         v   
+                    implement resizing      publish the resizing
+                   in the microfrontends    functionality
+                                            to production
+                    implement resizing
+                     of the container</code></pre>
+<p>Here, the microfrontends can not rely on the fact that the value of size is available to them right away. The type they have to add to the properties will probably first look something like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>interface Parameters { </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> int<span class="op">?</span> }<span class="op">?;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Until the container implements and publishes the resizing, the microfrontends will have to check if the size is already available before adapting the content.</p>
+<p><em>Pros:</em></p>
+<ul>
+<li>much faster delivery and less coordination effort</li>
+</ul>
+<p><em>Cons:</em></p>
+<ul>
+<li>reduced coordination needs to be dealt with in the code by logic for null or undefined values</li>
+<li>the logic is possibly never removed as the application grows and the developers of different micfrofrontends move on to developing other features before the resizing is published</li>
+</ul>
+<h2 id="consistence-resilience-in-parallel-coordination">Consistence resilience in parallel coordination</h2>
+<p>What if there was a better way of representing the uncertainty about the changing data in time, that consistently will allow all the microfrontends to be developed in parallel?</p>
+<p>A community of software developers has solved this problem since 1986 - more than 34 years ago. Their chosen language is erlang, and they develop highly distributed systems at scale, powering systems like WhatsApp. The idea is always to make sure that the data you receive from outside of your program is complete and not corrupted.</p>
+<p>We could have two stages for all the incoming data in our applications:</p>
+<ol type="1">
+<li>wrapping the Parameters type with <code>Partial&lt;Parameters&gt;</code></li>
+<li><a href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/">parse</a> the incoming data, crash if the parameters do not fulfill our expectations</li>
+<li>use the output of the parsed data as a verifiably correct structure.</li>
+</ol>
+<p>We would therefore have the types as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>interface Parameters { </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> int }<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">type</span> RawParameters <span class="op">=</span> <span class="bu">Partial</span><span class="op">&lt;</span>Parameters<span class="op">&gt;;</span></span></code></pre></div>
+<p><em>Pros:</em></p>
+<ul>
+<li>we have therefore all the niceness of the sequential solution in our logic</li>
+<li>we treat all the data the same way</li>
+</ul>
+<p><em>Cons:</em></p>
+<ul>
+<li>there is a small overhead connected with verifying that the input data fulfills all the necessary assumptions we have. I’d argue that we usually would verify the values regardless, somewhere later in the business logic.</li>
+</ul>
+<h2 id="additional-thoughts">Additional thoughts</h2>
+<p>There may be a way to reduce the overhead of parsing by creating a very fast (preferably linear or better) library to assert the right structure of data in ts.</p>
+<p>For parsing types at runtime, there is the <a href="https://github.com/gcanti/io-ts">io_ts</a> library. It might look quite intimidating at first, but I think it does a very good job at using long known constructs from functional programming and deal with errors properly using <code>Either</code>.</p>
+  </article>
+  <hr />
+</main>
+        <footer class="centered">
+            <small>
+                <a href="../../">home</a>
+                |
+                <a href="../../writing.html">writing</a>
+                |
+                <span><p>
+<a href="https://github.com/ptek/kerestey.net">source</a> | <a href="https://jeffhuang.com/designed_to_last/">designed to last</a>
+</p></span>
+            </small>
+        </footer>
+    </body>
+</html>
+<script data-goatcounter="https://pavlo-kerestey-net.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
