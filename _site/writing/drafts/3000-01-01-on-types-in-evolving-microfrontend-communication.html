@@ -45,12 +45,13 @@ size: {width: number}  in the microfrontends   in the container    functionality
 that doesn't change                                                to production</code></pre>
 <p><em>Pros:</em></p>
 <ul>
-<li>the microfrontends can use the <code>size</code> value and not worry if it is passed or not</li>
-<li>the microfrontends can add the right type as actually seen in the passed parameters</li>
+<li>the microfrontends can assume that the value is always present</li>
+<li>the type of the passed data can reflect the reality as seen in that point of time</li>
 </ul>
 <p><em>Cons:</em></p>
 <ul>
 <li>the process takes a long time, and there is potential for improvement</li>
+<li>logic for dealing with fields that are optional, or missing, is often spread across the application</li>
 </ul>
 <h2 id="the-parallel-coordination">The parallel coordination</h2>
 <p>The company figures out that they want to deploy faster and ask the developers of microfrontends to work on the new feature right away, while the container developers already start working on resizing the application in parallel.</p>
@@ -75,7 +76,7 @@ that doesn't change                                                to production
 <p><em>Cons:</em></p>
 <ul>
 <li>reduced coordination needs to be dealt with in the code by logic for null or undefined values</li>
-<li>the logic is possibly never removed as the application grows and the developers of different micfrofrontends move on to developing other features before the resizing is published</li>
+<li>logic for dealing with fields that are optional, or missing, is still spread across the application</li>
 </ul>
 <h2 id="consistent-approach-for-dealing-with-parallel-coordination">Consistent approach for dealing with parallel coordination</h2>
 <p>The above are the types I have seen on most projects. Some fields in parameter data structures are apparently certainly available to the application, some might not be. And it often breaks in unexpected ways when the assumptions about the certain ones do not hold any more.</p>
@@ -85,7 +86,7 @@ that doesn't change                                                to production
 <ol type="1">
 <li>wrapping the Parameters type with <code>Partial&lt;Parameters&gt;</code></li>
 <li><a href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/">parse</a> the incoming data, crash if the parameters do not fulfill our expectations</li>
-<li>use the output of the parsed data as a verifiably correct structure.</li>
+<li>use the output of the parsed data as a verifiably correct structure</li>
 </ol>
 <p>We would therefore have the types as follows:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>interface Parameters { </span>
@@ -94,20 +95,23 @@ that doesn't change                                                to production
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">type</span> RawParameters <span class="op">=</span> <span class="bu">Partial</span><span class="op">&lt;</span>Parameters<span class="op">&gt;;</span></span></code></pre></div>
-<p>In fact, this approach has been used by us on my last project. We have relied on two questions for this approach:</p>
+<p>In fact, this approach has been used by us on my last project. We have relied on three questions for this approach:</p>
 <ol type="1">
 <li>What if the data we rely upon is missing?</li>
 <li>What if the data received is not in the format we assumed?</li>
+<li>If the data can be optional, what is the default value that is used instead?</li>
 </ol>
-<p>Explicitly dealing with both situations in a consistent manner has helped us avoid many unpleasant surprises way before the applications went into production. Additinally, all the logic for dealing with this uncertainty was in one place and was easy to understand and look for.</p>
+<p>Explicitly dealing with these situations has helped us avoid many surprises way before the applications went into production. Additinally, all the logic naturally appeared in one place and was easy to look for and understand.</p>
 <p><em>Pros:</em></p>
 <ul>
-<li>we have therefore all the niceness of the sequential solution in our logic</li>
-<li>we treat all the data the same way</li>
+<li>all the logic for dealing with uncertain data is in one place</li>
+<li>the uncertainty is explicitly dealt with upfront</li>
+<li>all the input data is dealt with in a consistent way</li>
 </ul>
 <p><em>Cons:</em></p>
 <ul>
-<li>there is a small overhead connected with verifying that the input data fulfills all the necessary assumptions we have. I’d argue that we usually would verify the values regardless, somewhere later in the business logic.</li>
+<li>there is a runtime overhead for verifying that the input data fulfills all the assumptions</li>
+<li>more upfront thinking required</li>
 </ul>
 <h2 id="additional-thoughts">Additional thoughts</h2>
 <p>There may be a way to reduce the overhead of parsing by creating a very fast (preferably linear or better) library to assert the right structure of data in ts.</p>

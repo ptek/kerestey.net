@@ -55,12 +55,13 @@ that doesn't change                                                to production
 
 _Pros:_
 
-- the microfrontends can use the `size` value and not worry if it is passed or not
-- the microfrontends can add the right type as actually seen in the passed parameters
+- the microfrontends can assume that the value is always present 
+- the type of the passed data can reflect the reality as seen in that point of time
 
 _Cons:_
 
 - the process takes a long time, and there is potential for improvement
+- logic for dealing with fields that are optional, or missing, is often spread across the application
 
 ## The parallel coordination
 
@@ -97,7 +98,7 @@ _Pros:_
 _Cons:_
 
 - reduced coordination needs to be dealt with in the code by logic for null or undefined values
-- the logic is possibly never removed as the application grows and the developers of different micfrofrontends move on to developing other features before the resizing is published
+- logic for dealing with fields that are optional, or missing, is still spread across the application
 
 ## Consistent approach for dealing with parallel coordination
 
@@ -111,7 +112,7 @@ There could be two stages for all the incoming data in the microfrontends:
 
 1. wrapping the Parameters type with `Partial<Parameters>`
 2. [parse](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/) the incoming data, crash if the parameters do not fulfill our expectations
-3. use the output of the parsed data as a verifiably correct structure.
+3. use the output of the parsed data as a verifiably correct structure
 
 We would therefore have the types as follows:
 
@@ -124,21 +125,24 @@ interface Parameters {
 type RawParameters = Partial<Parameters>;
 ```
 
-In fact, this approach has been used by us on my last project. We have relied on two questions for this approach:
+In fact, this approach has been used by us on my last project. We have relied on three questions for this approach:
 
 1. What if the data we rely upon is missing?
 2. What if the data received is not in the format we assumed?
+3. If the data can be optional, what is the default value that is used instead?
 
-Explicitly dealing with both situations in a consistent manner has helped us avoid many unpleasant surprises way before the applications went into production. Additinally, all the logic for dealing with this uncertainty was in one place and was easy to understand and look for.
+Explicitly dealing with these situations has helped us avoid many surprises way before the applications went into production. Additinally, all the logic naturally appeared in one place and was easy to look for and understand.
 
 _Pros:_
 
-- we have therefore all the niceness of the sequential solution in our logic
-- we treat all the data the same way
+- all the logic for dealing with uncertain data is in one place
+- the uncertainty is explicitly dealt with upfront
+- all the input data is dealt with in a consistent way
 
 _Cons:_
 
-- there is a small overhead connected with verifying that the input data fulfills all the necessary assumptions we have. I'd argue that we usually would verify the values regardless, somewhere later in the business logic.
+- there is a runtime overhead for verifying that the input data fulfills all the assumptions
+- more upfront thinking required
 
 ## Additional thoughts
 
