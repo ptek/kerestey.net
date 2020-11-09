@@ -99,13 +99,15 @@ _Cons:_
 - reduced coordination needs to be dealt with in the code by logic for null or undefined values
 - the logic is possibly never removed as the application grows and the developers of different micfrofrontends move on to developing other features before the resizing is published
 
-## Consistence resilience in parallel coordination
+## Consistent approach for dealing with parallel coordination
 
-What if there was a better way of representing the uncertainty about the changing data in time, that consistently will allow all the microfrontends to be developed in parallel?
+The above are the types I have seen on most projects. Some fields in parameter data structures are apparently certainly available to the application, some might not be. And it often breaks in unexpected ways when the assumptions about the certain ones do not hold any more. 
 
-A community of software developers has solved this problem since 1986 - more than 34 years ago. Their chosen language is erlang, and they develop highly distributed systems at scale, powering systems like WhatsApp. The idea is always to make sure that the data you receive from outside of your program is complete and not corrupted.
+I think there is a better way for representing the uncertainty about the changing data in time. It should consistently allow all the microfrontends to be developed in parallel without the fear of breakage.
 
-We could have two stages for all the incoming data in our applications:
+In fact, a community of software developers has solved this problem since 1986 - more than 34 years ago. Their chosen language is erlang, and they develop highly distributed systems at scale, powering systems like WhatsApp. Their idea is always to make sure the completeness of the data received from outside of the application. In other words - never relying that all the fields are present and explicitly prepare for inconsistencies upfront.
+
+There could be two stages for all the incoming data in the microfrontends:
 
 1. wrapping the Parameters type with `Partial<Parameters>`
 2. [parse](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/) the incoming data, crash if the parameters do not fulfill our expectations
@@ -121,6 +123,13 @@ interface Parameters {
 
 type RawParameters = Partial<Parameters>;
 ```
+
+In fact, this approach has been used by us on my last project. We have relied on two questions for this approach:
+
+1. What if the data we rely upon is missing?
+2. What if the data received is not in the format we assumed?
+
+Explicitly dealing with both situations in a consistent manner has helped us avoid many unpleasant surprises way before the applications went into production. Additinally, all the logic for dealing with this uncertainty was in one place and was easy to understand and look for.
 
 _Pros:_
 
