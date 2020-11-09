@@ -113,9 +113,11 @@ that doesn't change                                                to production
 <li>there is a runtime overhead for verifying that the input data fulfills all the assumptions</li>
 <li>more upfront thinking required</li>
 </ul>
-<h2 id="additional-thoughts">Additional thoughts</h2>
+<h2 id="closing-thoughts">Closing thoughts</h2>
 <p>There may be a way to reduce the overhead of parsing by creating a very fast (preferably linear or better) library to assert the right structure of data in ts.</p>
 <p>For parsing types at runtime, there is the <a href="https://github.com/gcanti/io-ts">io_ts</a> library. It might look quite intimidating at first, but I think it does a very good job at using long known constructs from functional programming and deal with errors properly using <code>Either</code>.</p>
+<p>I would also like to mention that the idea of treating all parameters as uncertain came from a conversation with Simon Zelazny. He has some good articles <a href="https://well-ironed.com/">on erlang</a> and <a href="https://pzel.name/">other interesting development topics</a>.</p>
+<p>Also, thanks for putting up with the ideas to the team I have been implementing these with. I would really like to learn if it stood the test of time.</p>
   </article>
   <hr />
 </main>
