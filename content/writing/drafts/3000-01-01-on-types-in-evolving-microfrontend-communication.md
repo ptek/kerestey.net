@@ -99,7 +99,7 @@ _Cons:_
 - one needs to deal with the fact that new fields might not yet be available when application is published
 - logic for dealing with new fields is scattered around the codebase
 
-## Consistent approach for dealing with parallel coordination
+## Validating data "at the edge"
 
 The above are the types I have seen on most projects. Some fields in parameter data structures are apparently certainly available to the application, some might not be. And it often breaks in unexpected ways when the assumptions about the certain ones do not hold any more. 
 
@@ -142,12 +142,20 @@ _Cons:_
 - there is a runtime overhead for verifying that the input data fulfills all the assumptions
 - more upfront thinking required
 
+## A contract driven approach and future work
+
+Giamir Buoncristiani, a colleague of mine, has also suggested that verifying and validating the types on runtime not only brings some runtime overhead with it, but also introduces some amount of code that needs to be downloaded for that.
+
+He points out, that an alternative approach could be taken from coordinating frontend-backend communication using a sort of executable specification. We would use them to validate both consumer as well as the provider side. 
+
+At the time of writing, an off the shelf [Consumer Driven Contract Testing](https://www.martinfowler.com/articles/consumerDrivenContracts.html) solution does not exist yet for cross microfrontend communication, but it might provide a much faster feedback about application correctness before production.
+
 ## Closing thoughts
 
 There may be a way to reduce the overhead of parsing by creating a very fast (preferably linear or better) library to assert the right structure of data in ts.
 
 For parsing types at runtime, there is the [io_ts](https://github.com/gcanti/io-ts) library. It might look quite intimidating at first, but I think it does a very good job at using long known constructs from functional programming and deal with errors properly using `Either`.
 
-I would also like to mention that the idea of treating all properties as uncertain came from a conversation with Simon Zelazny. He has some good articles [on erlang](https://well-ironed.com/) and [other interesting development topics](https://pzel.name/).
+I would like to mention that the idea of treating all properties as uncertain came from Simon Zelazny. He has some good articles [on erlang](https://well-ironed.com/) and [other interesting development topics](https://pzel.name/).
 
 Also, thanks for putting up with the ideas to the team I have been implementing these with. I would really like to learn if it stood the test of time.

@@ -78,7 +78,7 @@ that doesn't change    microfrontends                               to productio
 <li>one needs to deal with the fact that new fields might not yet be available when application is published</li>
 <li>logic for dealing with new fields is scattered around the codebase</li>
 </ul>
-<h2 id="consistent-approach-for-dealing-with-parallel-coordination">Consistent approach for dealing with parallel coordination</h2>
+<h2 id="validating-data-at-the-edge">Validating data “at the edge”</h2>
 <p>The above are the types I have seen on most projects. Some fields in parameter data structures are apparently certainly available to the application, some might not be. And it often breaks in unexpected ways when the assumptions about the certain ones do not hold any more.</p>
 <p>I think there is a better way for representing the uncertainty about the changing data in time. It should consistently allow all the microfrontends to be developed in parallel without the fear of breakage.</p>
 <p>In fact, a community of software developers has solved this problem since 1986 - more than 34 years ago. Their chosen language is erlang, and they develop highly distributed systems at scale, powering systems like WhatsApp. Their idea is always to make sure the completeness of the data received from outside of the application. In other words - never relying that all the fields are present and explicitly prepare for inconsistencies upfront.</p>
@@ -112,10 +112,14 @@ that doesn't change    microfrontends                               to productio
 <li>there is a runtime overhead for verifying that the input data fulfills all the assumptions</li>
 <li>more upfront thinking required</li>
 </ul>
+<h2 id="a-contract-driven-approach-and-future-work">A contract driven approach and future work</h2>
+<p>Giamir Buoncristiani, a colleague of mine, has also suggested that verifying and validating the types on runtime not only brings some runtime overhead with it, but also introduces some amount of code that needs to be downloaded for that.</p>
+<p>He points out, that an alternative approach could be taken from coordinating frontend-backend communication using a sort of executable specification. We would use them to validate both consumer as well as the provider side.</p>
+<p>At the time of writing, an off the shelf <a href="https://www.martinfowler.com/articles/consumerDrivenContracts.html">Consumer Driven Contract Testing</a> solution does not exist yet for cross microfrontend communication, but it might provide a much faster feedback about application correctness before production.</p>
 <h2 id="closing-thoughts">Closing thoughts</h2>
 <p>There may be a way to reduce the overhead of parsing by creating a very fast (preferably linear or better) library to assert the right structure of data in ts.</p>
 <p>For parsing types at runtime, there is the <a href="https://github.com/gcanti/io-ts">io_ts</a> library. It might look quite intimidating at first, but I think it does a very good job at using long known constructs from functional programming and deal with errors properly using <code>Either</code>.</p>
-<p>I would also like to mention that the idea of treating all properties as uncertain came from a conversation with Simon Zelazny. He has some good articles <a href="https://well-ironed.com/">on erlang</a> and <a href="https://pzel.name/">other interesting development topics</a>.</p>
+<p>I would like to mention that the idea of treating all properties as uncertain came from Simon Zelazny. He has some good articles <a href="https://well-ironed.com/">on erlang</a> and <a href="https://pzel.name/">other interesting development topics</a>.</p>
 <p>Also, thanks for putting up with the ideas to the team I have been implementing these with. I would really like to learn if it stood the test of time.</p>
   </article>
   <hr />
