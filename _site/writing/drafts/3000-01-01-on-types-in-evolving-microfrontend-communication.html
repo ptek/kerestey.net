@@ -19,33 +19,33 @@
 <h2 id="the-planning">The planning</h2>
 <p>When developing an application consisting of several microfrontends, the motivation is to give autonomy to the teams responsible for the different parts of the application. Dependencies between the microfrontends evolve, and the development usually has to be a coordinated undertaking. The way a company chooses to coordinate the development affects the implementation, and I have found several scenarios and how they possibly affect code.</p>
 <h2 id="the-setup">The setup</h2>
-<p>For example, I describe an application similar to the article about cross microfrontend communication: <strong>a container</strong> responsible for loading and laying out all the microfrontends, and the <strong>two microfrontends</strong> that show actual content.</p>
-<p>For the sake of the example, at the beginning of the development lifecycle, the container passes a switch to the microfrontends indicating that the user is using a dark mode in their OS. This way, the microfrontends can adapt their styling accordingly. Future features are still being analyzed as the business figures out the right set of functionality. Until then, the application goes live with minimum content so that users get to know about it.</p>
-<p>Usually, in the microfrontends, I would type the properties exactly as they are receiving it from the container, i.e.:</p>
+<p>As an example, I’ll discuss an application similar to the one in the article about cross microfrontend communication consisting of two microfrontends passing values from a <em>provider</em> microfrontend to a <em>consumer</em>.</p>
+<p>For the sake of the example, at the beginning of the development lifecycle, the provider passes a switch to the microfrontends indicating that the user is using a dark mode in their OS. This way, the microfrontends can adapt their styling accordingly. Future features are still being analyzed as the business figures out the right set of functionality. Until then, the application goes live with minimum content so that users get to know about it.</p>
+<p>Usually, in the microfrontends, I would type the properties exactly as they are receiving it from the provider, i.e.:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>{ dark<span class="op">:</span> <span class="dt">boolean</span> }</span></code></pre></div>
 <p>The mechanism of receiving the value does not matter in this case.</p>
 <p>After some time, the company figured out that users care very much about the responsiveness of their view. So they want to add size in pixels of the microfrontend for it to adapt.</p>
-<h2 id="the-sequential-coordination">The sequential coordination</h2>
+<h2 id="sequential-coordination">Sequential coordination</h2>
 <p>The company decides that the changes will be done sequentially:</p>
 <ul>
-<li><p>first, a new field is going to be added to the passed on properties in the container. The new parameters are, therefore:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>interface Parameters { </span>
+<li><p>first, a new field is going to be added to the passed on properties in the provider. The new properties are, therefore:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>interface Properties { </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> <span class="dt">number</span> }<span class="op">;</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>}</span></code></pre></div></li>
-<li><p>the container team needs to publish the new version of the application before the microfrontend teams can start adding the value to their dependencies and make their content adjustable</p></li>
-<li><p>now, the microfrontends can add the property to their dependent parameters, and use it to adjust the styles according to it</p></li>
-<li><p>only when every microfrontend has deployed their adaptiveness can the container also add resizing functionality to the website so that the application does not show different microfrontends in a broken way</p></li>
+<li><p>the provider team needs to publish the new version of the application before the consumer teams can start adding the value to their dependencies and make their content adjustable</p></li>
+<li><p>now, the consumer microfrontends can add the property to their dependent properties, and use it to adjust the styles according to it. Accessing the width from properties can be done directly: <code>props.size.width</code></p></li>
+<li><p>only when every consumer has deployed their adaptiveness can the provider also add resizing functionality to the website so that the application does not show different consumer microfrontends in a broken way</p></li>
 </ul>
 <p>As a picture:</p>
 <pre class="text"><code>--------|-------------------------|--------------------|------------------|-&gt; time
         v                         v                    v                  v
-in the container add   implement resizing      implement resizing  publish the resizing
-size: {width: number}  in the microfrontends   in the container    functionality
-that doesn't change                                                to production</code></pre>
+in the provider add    implement resizing      implement resizing  publish the resizing
+size: {width: number}  in the consumer          in the provider     functionality
+that doesn't change    microfrontends                               to production</code></pre>
 <p><em>Pros:</em></p>
 <ul>
-<li>the microfrontends can assume that the value is always present</li>
+<li>the consumer microfrontends can rely on the fact that the value is always present</li>
 <li>the type of the passed data can reflect the reality as seen in that point of time</li>
 </ul>
 <p><em>Cons:</em></p>
@@ -53,8 +53,8 @@ that doesn't change                                                to production
 <li>the process takes a long time, and there is potential for improvement</li>
 <li>logic for dealing with fields that are optional, or missing, is often spread across the application</li>
 </ul>
-<h2 id="the-parallel-coordination">The parallel coordination</h2>
-<p>The company figures out that they want to deploy faster and ask the developers of microfrontends to work on the new feature right away, while the container developers already start working on resizing the application in parallel.</p>
+<h2 id="parallel-coordination">Parallel coordination</h2>
+<p>The company figures out that they want to deploy faster and ask the developers of consumer microfrontends to work on the new feature right away, while the provider developers already start working on resizing the application in parallel.</p>
 <p>The only decision the has been made: the type of the size property will be: <code>size: { width: number }</code></p>
 <pre class="text"><code>                   --------|-------------------------|-&gt; time
                            v                         v   
@@ -62,45 +62,44 @@ that doesn't change                                                to production
                    in the microfrontends    functionality
                                             to production
                     implement resizing
-                     of the container</code></pre>
-<p>Here, the microfrontends can not rely on the fact that the value of size is available to them right away. The type they have to add to the properties will probably first look something like this:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>interface Parameters { </span>
+                     of the provider</code></pre>
+<p>Here, the consumer microfrontends can not rely on the fact that the value of size is available to them right away. The type they have to add to the properties will probably first look something like this:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a>interface Properties { </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> <span class="dt">number</span><span class="op">?</span> }<span class="op">?;</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Until the container implements and publishes the resizing, the microfrontends will have to check if the size is already available before adapting the content.</p>
+<p>The dark mode parameter is still accessed directly via <code>props.dark</code>. Since TypeScript 3.7, accessing width is just slightly more tedious: <code>props.size?.width</code>. The problem is rather that such access tends to be scattered around the codebase, often interspersed with the code for business logic. In those cases there are often no simple means of validating the value structure, or logging and reporting an error if the assumptions about the value are not met. We, the developers, usually resort to leaving the validation out completely at this point. Until the provider implements and publishes the resizing, the consumer microfrontends may break in unsuspected ways.</p>
 <p><em>Pros:</em></p>
 <ul>
 <li>much faster delivery and less coordination effort</li>
 </ul>
 <p><em>Cons:</em></p>
 <ul>
-<li>reduced coordination needs to be dealt with in the code by logic for null or undefined values</li>
-<li>logic for dealing with fields that are optional, or missing, is still spread across the application</li>
+<li>one needs to deal with the fact that new fields might not yet be available when application is published</li>
+<li>logic for dealing with new fields is scattered around the codebase</li>
 </ul>
 <h2 id="consistent-approach-for-dealing-with-parallel-coordination">Consistent approach for dealing with parallel coordination</h2>
 <p>The above are the types I have seen on most projects. Some fields in parameter data structures are apparently certainly available to the application, some might not be. And it often breaks in unexpected ways when the assumptions about the certain ones do not hold any more.</p>
 <p>I think there is a better way for representing the uncertainty about the changing data in time. It should consistently allow all the microfrontends to be developed in parallel without the fear of breakage.</p>
 <p>In fact, a community of software developers has solved this problem since 1986 - more than 34 years ago. Their chosen language is erlang, and they develop highly distributed systems at scale, powering systems like WhatsApp. Their idea is always to make sure the completeness of the data received from outside of the application. In other words - never relying that all the fields are present and explicitly prepare for inconsistencies upfront.</p>
-<p>There could be two stages for all the incoming data in the microfrontends:</p>
-<ol type="1">
-<li>wrapping the Parameters type with <code>Partial&lt;Parameters&gt;</code></li>
-<li><a href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/">parse</a> the incoming data, crash if the parameters do not fulfill our expectations</li>
-<li>use the output of the parsed data as a verifiably correct structure</li>
-</ol>
-<p>We would therefore have the types as follows:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>interface Parameters { </span>
+<p>The types will therefore look as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>interface Properties { </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>	dark<span class="op">:</span> <span class="dt">boolean</span><span class="op">;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>	size<span class="op">:</span> { width<span class="op">:</span> <span class="dt">number</span> }<span class="op">;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">type</span> RawParameters <span class="op">=</span> <span class="bu">Partial</span><span class="op">&lt;</span>Parameters<span class="op">&gt;;</span></span></code></pre></div>
-<p>In fact, this approach has been used by us on my last project. We have relied on three questions for this approach:</p>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">type</span> RawProperties <span class="op">=</span> <span class="bu">Partial</span><span class="op">&lt;</span>Properties<span class="op">&gt;;</span></span></code></pre></div>
+<p>And there are two stages for all the incoming data in the microfrontends:</p>
 <ol type="1">
+<li><a href="https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/">parse</a> the incoming data, fail fast at the edge of the application if the properties do not fulfill our expectations: <code>props = parse(rawProps)</code></li>
+<li>use the output of the parsed data as a verifiably correct structure: <code>props.size.width</code></li>
+</ol>
+<p>In fact, this approach has been used by us on my last project. We have relied on three questions for this approach:</p>
+<ul>
 <li>What if the data we rely upon is missing?</li>
 <li>What if the data received is not in the format we assumed?</li>
 <li>If the data can be optional, what is the default value that is used instead?</li>
-</ol>
+</ul>
 <p>Explicitly dealing with these situations has helped us avoid many surprises way before the applications went into production. Additinally, all the logic naturally appeared in one place and was easy to look for and understand.</p>
 <p><em>Pros:</em></p>
 <ul>
@@ -116,7 +115,7 @@ that doesn't change                                                to production
 <h2 id="closing-thoughts">Closing thoughts</h2>
 <p>There may be a way to reduce the overhead of parsing by creating a very fast (preferably linear or better) library to assert the right structure of data in ts.</p>
 <p>For parsing types at runtime, there is the <a href="https://github.com/gcanti/io-ts">io_ts</a> library. It might look quite intimidating at first, but I think it does a very good job at using long known constructs from functional programming and deal with errors properly using <code>Either</code>.</p>
-<p>I would also like to mention that the idea of treating all parameters as uncertain came from a conversation with Simon Zelazny. He has some good articles <a href="https://well-ironed.com/">on erlang</a> and <a href="https://pzel.name/">other interesting development topics</a>.</p>
+<p>I would also like to mention that the idea of treating all properties as uncertain came from a conversation with Simon Zelazny. He has some good articles <a href="https://well-ironed.com/">on erlang</a> and <a href="https://pzel.name/">other interesting development topics</a>.</p>
 <p>Also, thanks for putting up with the ideas to the team I have been implementing these with. I would really like to learn if it stood the test of time.</p>
   </article>
   <hr />
