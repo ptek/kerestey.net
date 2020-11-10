@@ -154,7 +154,7 @@ At the time of writing, an off the shelf [Consumer Driven Contract Testing](http
 
 There may be a way to reduce the overhead of parsing by creating a very fast (preferably linear or better) library to assert the right structure of data in ts.
 
-For parsing types at runtime, there is the [io_ts](https://github.com/gcanti/io-ts) library. It might look quite intimidating at first, but I think it does a very good job at using long known constructs from functional programming and deal with errors properly using `Either`.
+For parsing types at runtime, there is the [io-ts](https://github.com/gcanti/io-ts) library. It might look quite intimidating at first, but I think it does a very good job at using long known constructs from functional programming and deal with errors properly using `Either`.
 
 I would like to mention that the idea of treating all properties as uncertain came from Simon Zelazny. He has some good articles [on erlang](https://well-ironed.com/) and [other interesting development topics](https://pzel.name/).
 
