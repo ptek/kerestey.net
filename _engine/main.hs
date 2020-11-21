@@ -1,10 +1,8 @@
-{-# LANGUAGE OverloadedStrings #-}
+    {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards   #-}
 
 module Main where
 
-import Control.Monad (filterM)
-import Data.Maybe (isNothing)
 import Hakyll
 import System.FilePath
 
@@ -57,7 +55,7 @@ main = hakyllWith hakyllConf $ do
         compile compressCssCompiler
 
     -- Render texts
-    match "texts/*" $ compile pandocCompilerWithAsciidoctor
+    match "texts/*" $ compile pandocCompiler
 
     -- Read templates
     match "templates/*" $ compile templateCompiler
@@ -67,7 +65,7 @@ main = hakyllWith hakyllConf $ do
         route $ gsubRoute "pages/" (const "") `composeRoutes` createSubpageDir
         compile $ do
             ctx <- loadContext defaultCtx
-            pandocCompilerWithAsciidoctor
+            pandocCompiler
                 >>= loadAndApplyTemplate "templates/page.html" ctx
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= insertTexts
@@ -78,10 +76,19 @@ main = hakyllWith hakyllConf $ do
         route   $ setExtension "html"
         compile $ do
             ctx <- loadContext defaultCtx
-            pandocCompilerWithAsciidoctor
+            pandocCompiler
+                >>= saveSnapshot "writing-content"
                 >>= loadAndApplyTemplate "templates/writing.html" ctx
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
+
+    -- Render Atom Feed
+    create ["atom.xml"] $ do
+        route idRoute
+        compile $ do
+            ctx <- loadContext defaultCtx
+            posts <- recentFirst =<< loadAllSnapshots publishedWriting "writing-content"
+            renderAtom feedConfiguration (ctx `mappend` bodyField "description") posts
 
     -- Render home
     create ["index.html"] $ do
@@ -97,8 +104,9 @@ main = hakyllWith hakyllConf $ do
         route idRoute
         compile $ do
             ctx <- loadContext allPostsCtx
-            postList "writing/*.md" recentFirst
-                >>= makeItem
+            loadAll publishedWriting
+                >>= recentFirst 
+                >>= loadAndApplyTemplateList "templates/writing-list-item.html" defaultCtx
                 >>= loadAndApplyTemplate "templates/writing-list.html" ctx
                 >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
@@ -106,7 +114,7 @@ main = hakyllWith hakyllConf $ do
     create ["sitemap.xml"] $ do
         route idRoute
         compile $ do
-            posts <- recentFirst =<< loadAll "writing/*"
+            posts <- recentFirst =<< loadAll publishedWriting
             singlePages <- loadAll "pages/*"
             createdPages <- loadAll (fromList ["writing.html"])
             let pages = createdPages <> singlePages <> posts
@@ -131,21 +139,21 @@ loadTexts =
     toConstField Item{..} = constField (toFieldName itemIdentifier) itemBody
     toFieldName = ("text-" ++) . takeBaseName . toFilePath
 
-postList :: Pattern -> ([Item String] -> Compiler [Item String]) -> Compiler String
-postList pattern preprocess' = do
-    postItemTpl <- loadBody "templates/writing-list-item.html"
-    posts <- preprocess' =<< filterM notDraft =<< loadAll pattern
-    ctx <- loadContext defaultCtx
-    applyTemplateList postItemTpl ctx posts
-    where
-    notDraft :: Item a -> Compiler Bool
-    notDraft (Item identifier _) = getMetadataField identifier "draft" >>= return . isNothing
+publishedWriting :: Pattern
+publishedWriting = "writing/*.md"
 
--- Allow to compile ascii docs.
-pandocCompilerWithAsciidoctor :: Compiler (Item String)
-pandocCompilerWithAsciidoctor = do
-  extension <- getUnderlyingExtension
-  if extension == ".asciidoc" then
-    getResourceString >>= withItemBody (unixFilter "asciidoctor" ["-"])
-  else
-    pandocCompiler
+loadAndApplyTemplateList :: Identifier -> Context a -> [Item a] -> Compiler (Item String)
+loadAndApplyTemplateList template context item = do 
+    postItemTpl <- loadBody template
+    ctx <- loadContext context
+    applyTemplateList postItemTpl ctx item >>= makeItem
+
+
+feedConfiguration :: FeedConfiguration
+feedConfiguration = FeedConfiguration
+    { feedTitle       = "Pavlo Kerestey: Writing"
+    , feedDescription = "Writing of Pavlo Kerestey, mostly technical articles with an occasional personal post"
+    , feedAuthorName  = "Pavlo Kerestey"
+    , feedAuthorEmail = "pavlo .at. kerestey .dot. net"
+    , feedRoot        = "https://kerestey.net/"
+    }
