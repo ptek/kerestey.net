@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Pavlo Kerestey: Writing</title>
-    <link href="https://kerestey.net//atom.xml" rel="self" />
-    <link href="https://kerestey.net/" />
-    <id>https://kerestey.net//atom.xml</id>
+    <link href="https://kerestey.net/atom.xml" rel="self" />
+    <link href="https://kerestey.net" />
+    <id>https://kerestey.net/atom.xml</id>
     <author>
         <name>Pavlo Kerestey</name>
         <email>pavlo .at. kerestey .dot. net</email>
@@ -11,8 +11,8 @@
     <updated>2020-07-07T00:00:00Z</updated>
     <entry>
     <title>First impressions with Single-SPA</title>
-    <link href="https://kerestey.net//writing/2020-07-07-first-impressions-single-spa.html" />
-    <id>https://kerestey.net//writing/2020-07-07-first-impressions-single-spa.html</id>
+    <link href="https://kerestey.net/writing/2020-07-07-first-impressions-single-spa.html" />
+    <id>https://kerestey.net/writing/2020-07-07-first-impressions-single-spa.html</id>
     <published>2020-07-07T00:00:00Z</published>
     <updated>2020-07-07T00:00:00Z</updated>
     <summary type="html"><![CDATA[<p>On my current project I use <a href="https://single-spa.js.org/">single-spa framework</a> to create a dashboard where developers can publish small bits of data visualization.</p>
@@ -48,8 +48,8 @@
 </entry>
 <entry>
     <title>Announcing unverified.email</title>
-    <link href="https://kerestey.net//writing/2020-04-05-announcing-unverified-dot-email.html" />
-    <id>https://kerestey.net//writing/2020-04-05-announcing-unverified-dot-email.html</id>
+    <link href="https://kerestey.net/writing/2020-04-05-announcing-unverified-dot-email.html" />
+    <id>https://kerestey.net/writing/2020-04-05-announcing-unverified-dot-email.html</id>
     <published>2020-04-05T00:00:00Z</published>
     <updated>2020-04-05T00:00:00Z</updated>
     <summary type="html"><![CDATA[<h1 id="important-update.">Important Update.</h1>
@@ -128,8 +128,8 @@ A test email message created by the application</code></pre>
 </entry>
 <entry>
     <title>Post multipart/form-data with khttp</title>
-    <link href="https://kerestey.net//writing/2019-10-26-post-multipart-form-data-using-khttp.html" />
-    <id>https://kerestey.net//writing/2019-10-26-post-multipart-form-data-using-khttp.html</id>
+    <link href="https://kerestey.net/writing/2019-10-26-post-multipart-form-data-using-khttp.html" />
+    <id>https://kerestey.net/writing/2019-10-26-post-multipart-form-data-using-khttp.html</id>
     <published>2019-10-26T00:00:00Z</published>
     <updated>2019-10-26T00:00:00Z</updated>
     <summary type="html"><![CDATA[<p>A challenge that I had recently was sending some data as <code>json</code> to an endpoint as <code>multipart/form-data</code>, providing the right encoding, in a Kotlin codebase.</p>
@@ -188,8 +188,8 @@ post(url, headers=form.headers, data=form.data)</code></pre>
 </entry>
 <entry>
     <title>Serializing kotlin sealed classes (algebraic datatypes) to JSON</title>
-    <link href="https://kerestey.net//writing/2019-10-10-serialising-kotlin-sealed-classes-to-json.html" />
-    <id>https://kerestey.net//writing/2019-10-10-serialising-kotlin-sealed-classes-to-json.html</id>
+    <link href="https://kerestey.net/writing/2019-10-10-serialising-kotlin-sealed-classes-to-json.html" />
+    <id>https://kerestey.net/writing/2019-10-10-serialising-kotlin-sealed-classes-to-json.html</id>
     <published>2019-10-10T00:00:00Z</published>
     <updated>2019-10-10T00:00:00Z</updated>
     <summary type="html"><![CDATA[<p>At my current project, I am trying to discover how to represent <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">algebraic datatypes</a> in Kotlin. The reason I’d like to use them is the ability to exhaustively specify all the cases of a thing that I care about.</p>

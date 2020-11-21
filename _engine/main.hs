@@ -155,5 +155,5 @@ feedConfiguration = FeedConfiguration
     , feedDescription = "Writing of Pavlo Kerestey, mostly technical articles with an occasional personal post"
     , feedAuthorName  = "Pavlo Kerestey"
     , feedAuthorEmail = "pavlo .at. kerestey .dot. net"
-    , feedRoot        = "https://kerestey.net/"
+    , feedRoot        = "https://kerestey.net"
     }
