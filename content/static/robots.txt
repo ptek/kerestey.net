@@ -1,8 +1,0 @@
-Sitemap: http://kerestey.net/sitemap.xml
-
-User-agent: *
-Disallow: /js
-Disallow: /images
-Disallow: /unpublished
-Disallow: /writing/drafts/
-Allow: /

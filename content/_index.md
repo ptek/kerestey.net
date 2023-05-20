@@ -7,7 +7,7 @@ pavlo kerestey
 
 software development
 
-[writing](/writing.html)
+[writing](/writing/)
 
 [projects](https://github.com/ptek)
 

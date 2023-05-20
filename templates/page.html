@@ -1,0 +1,16 @@
+{% extends "base-writing.html" %}
+
+{% block header %}
+<h1 class="centered"> {{ page.title | safe }}</h1>
+{% endblock header %}
+
+
+{% block content %}
+<date class="centered">
+    <span><small>Pavlo Kerestey - {{ page.date | date(format="%B %d, %Y")}}</small></span>
+</date>
+<article>
+    {{ page.content | safe }}
+</article>
+<hr/>
+{% endblock content %}

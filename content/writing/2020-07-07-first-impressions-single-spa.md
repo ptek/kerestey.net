@@ -32,9 +32,12 @@ error in a following way:
 
 ```typescript
 <Parcel
-  config={parcelConfig}
-  handleError={err => console.error(err)}
-  ...
+    config = {parcelConfig}
+handleError = {err
+=>
+console.error(err)
+}
+...
 />
 ```
 
@@ -58,15 +61,15 @@ recognize."](https://devblogs.microsoft.com/oldnewthing/20050114-00/?p=36693)
 
 In another instance, each of the lifecycle functions (bootstrap, mount, and
 unmount) [requires a `name`
-prop](https://single-spa.js.org/docs/building-applications/#lifecyle-props).
+prop](https://single-spa.js.org/docs/building-applications/#lifecycle-props).
 But single-spa does not check for the presence of it when the function is
-called. 
+called.
 
 When we created an entrypoint to an application with
 
 ```typescript
 function mount(): {
-  return singleSpa.mount(props);
+    return singleSpa.mount(props);
 }
 ```
 
